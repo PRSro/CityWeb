@@ -72,7 +72,7 @@
       "rg *": "allow",
       "npm test*": "allow",
       "npm run lint*": "allow",
-      "git push*": "deny",
+      "git push*": "allow",
       "rm -rf*": "deny"
     }
   },
