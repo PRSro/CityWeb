@@ -1,14 +1,38 @@
 # OpenCode Setup & AI Agent Master System Prompt
 
-`opencode.jsonc` and `AGENTS.md` are untracked in git for this repo. This document serves as the live config specification, project architecture guide, and **Master System Prompt** for AI coding agents building **CityWeb**.
+`opencode.jsonc` and `AGENTS.md` are untracked in git for this repo. This document serves as the live config specification, project architecture guide, and **Master System Prompt** for AI coding agents building **CityWeb ("Piața")**.
 
 ---
 
-## 1. AI Master Directive & Architecture Guide
+## 1. Product Concept & Master AI Directive
 
-When building, modifying, or creating components in **CityWeb**, AI agents MUST adhere strictly to the following architectural patterns and implementation standards:
+### 1.1 Product Vision: "Piața"
+AI agents working on **CityWeb** MUST align all features, components, and data structures with the product vision:
+> **"Piața"** — the city square where people once met, traded, argued, and found work (inspired by Bucharest's *Micul Paris* legacy).
+> **Core Question Answered**: *"What's happening in my Bucharest, and where do I fit in it?"*
 
-### 1.1 Dual-Framework Component Pattern (Vue 3 + React 19 via Veaury)
+### 1.2 The 3-Pillar Interlinked Data Model (`Where`, `When`, `Who`)
+Nothing in the codebase is a standalone listing. Every component or data model must connect cross-domain nodes:
+- **Traffic Closure**: Linked to affected events, broken transit routes, and local civic polls (*e.g., "Should Calea Victiorei be pedestrian on Sundays?"*).
+- **Event**: Linked to neighborhood attendees, job openings from companies present in the room, and live polls.
+- **Job Opening**: Linked to home-to-work metro commute time, mutual connections who work there, and verified salary polls.
+- **Poll**: Rooted in place & community (*e.g., "Sector 3 Residents"*); feeds featured events.
+- **Profile / Person**: Historical log of verified event appearances & contributions, NOT a static CV.
+
+### 1.3 Core 5-Tab Navigation Structure
+AI agents building views MUST map all pages into these 5 core tabs + 1 central action modal:
+1. 📻 **Acum**: Live personalized feed (closures, events tonight, sector polls, nearby jobs).
+2. 🗺️ **Harta**: Interactive filterable city map.
+3. 👥 **Oameni**: Neighborhood hubs & local community members.
+4. 📅 **Calendar**: Event schedule & attendance tracker.
+5. 👤 **Eu**: City Passport, visit stamps, and history.
+6. ➕ **Central Plus Button**: Modal launcher to post an Event, Job, or Poll.
+
+---
+
+## 2. Technical Implementation & Architectural Standards
+
+### 2.1 Dual-Framework Component Pattern (Vue 3 + React 19 via Veaury)
 - **Primary View Engine**: Vue 3 using `<script setup>` Single File Components (SFCs).
 - **React Component Integration**: React components (from **Watermelon UI**, **Shadcn UI**, or custom TSX) MUST be placed inside `src/components/ui/*.tsx`.
 - **Bridge Export Standard**: React components MUST NOT be imported directly into `.vue` files. They MUST be wrapped using `applyReactInVue` inside `src/components/watermelon-ui.ts` (or dedicated wrapper modules):
@@ -24,44 +48,19 @@ export const CardSplitAccordion = applyReactInVue(CardSplitAccordionReact);
 export const Button = applyReactInVue(ButtonReact);
 ```
 
-```vue
-<!-- src/App.vue -->
-<template>
-  <CardSplitAccordion :items="accordionItems" />
-</template>
-
-<script setup>
-import { CardSplitAccordion } from '#components/watermelon-ui';
-</script>
-```
-
-### 1.2 Design System & Custom Theme Tokens (`@theme`)
-- **Tailwind v4 Engine**: Configured via `@tailwindcss/vite`.
-- **Primary Stylesheet**: `src/styles/globals.css` which imports `./theme.css`.
-- **Custom Theme Variables**: All custom tokens defined in `@theme` in `src/styles/theme.css` MUST be utilized for styling:
-  - **Colors**:
-    - Primary Blue: `var(--color-atlassian-blue)` / `bg-atlassian-blue` (`#1868db`)
-    - Midnight Navy: `var(--color-midnight-navy)` / `bg-midnight-navy` (`#101214`)
-    - Carbon Edge: `var(--color-carbon-edge)` / `bg-carbon-edge` (`#292a2e`)
-    - Slate Current: `var(--color-slate-current)` / `bg-slate-current` (`#1c2b42`)
-    - Taxicab Yellow: `var(--color-taxicab-yellow)` / `bg-taxicab-yellow` (`#fca700`)
-    - Lavender Wash: `var(--color-lavender-wash)` / `bg-lavender-wash` (`#eed7fc`)
-    - Confetti Gradient: `var(--color-confetti-gradient)` (`#bf63f3`)
-  - **Typography**:
-    - Display Font: `var(--font-charlie-display)` (`'Charlie Display'`)
-    - Text Font: `var(--font-charlie-text)` (`'Charlie Text'`)
-  - **Scale & Spacing**:
-    - Radius: `--radius-sm` (2px), `--radius-md` (5px), `--radius-xl` (15px), `--radius-2xl` (20px), `--radius-3xl` (24px), `--radius-full` (10000px)
-    - Spacing: `--spacing-4` through `--spacing-200`
-- **Class Composition**: Use `cva` (Class Variance Authority), `clsx`, and `tailwind-merge` (`cn` helper in `src/lib/utils.ts`) for conditional styling.
-
-### 1.3 Animations & Icons
-- **React Components**: Use `framer-motion` (`motion`), `tw-animate-css`, and `react-use-measure`.
-- **Icons**: Use `lucide-vue-next` for Vue templates and `lucide-react` / `react-icons` for React components.
+### 2.2 Design System, Custom Fonts & Theme Tokens
+- **Font Integration**: Uses custom `@font-face` definitions configured in `src/styles/globals.css`:
+  - Display Font: `var(--font-charlie-display)` (`'Charlie Display'`) for `h1`-`h6`.
+  - Text Font: `var(--font-charlie-text)` (`'Charlie Text'`) for `body`.
+- **Tailwind v4 Engine**: Configured via `@tailwindcss/vite` and `src/styles/theme.css`.
+- **Custom Theme Variables**:
+  - Colors: `atlassian-blue` (`#1868db`), `midnight-navy` (`#101214`), `carbon-edge` (`#292a2e`), `slate-current` (`#1c2b42`), `taxicab-yellow` (`#fca700`), `lavender-wash` (`#eed7fc`), `confetti-gradient` (`#bf63f3`).
+  - Spacing & Radius: `--radius-sm` (2px), `--radius-md` (5px), `--radius-xl` (15px), `--radius-2xl` (20px), `--radius-3xl` (24px), `--radius-full` (10000px).
+- **Class Composition**: Use `cva`, `clsx`, and `tailwind-merge` (`cn` helper in `src/lib/utils.ts`).
 
 ---
 
-## 2. Config File (`opencode.jsonc`)
+## 3. Config File (`opencode.jsonc`)
 
 Save the block below as `opencode.jsonc` in your project root.
 
@@ -147,25 +146,22 @@ Save the block below as `opencode.jsonc` in your project root.
 
 ---
 
-## 3. Master `AGENTS.md` File
+## 4. Master `AGENTS.md` File
 
-Save the block below as `AGENTS.md` in the project root. This file is loaded automatically into every AI conversation session.
+Save the block below as `AGENTS.md` in the project root.
 
 ```md
 # AI Agent Execution Rules & Project Directives
 
-## 1. Workflow Protocols
-- **Planning Phase**: Do not edit files during planning. Produce a numbered step-by-step plan listing target files, dependencies, potential risks, and explicit OUT OF SCOPE items. Limit plan to < 400 words.
-- **Execution Phase**: Implement only the approved plan using minimal code diffs. Never refactor surrounding untouched code.
-- **Search & Inspection**: Locate exact line numbers before editing. Never dump full files into chat.
+## 1. Product Identity ("Piața")
+Building Bucharest's digital city square ("Piața").
+Core Model: Connect everything via Where, When, Who.
+Tabs: Acum (Feed), Harta (Map), Oameni (People), Calendar (Events), Eu (Passport).
 
-## 2. Core Stack Specifications
-- **App Shell**: Vue 3 `<script setup>` + Vite 8
-- **React Bridge**: Veaury (`applyReactInVue`)
-- **React UI Libraries**: Watermelon UI, Shadcn UI (`base-nova`), Radix Vue
-- **Styling**: Tailwind CSS v4 + `tw-animate-css`
-- **Animations**: `framer-motion`, `motion`, `react-use-measure`
-- **Subpath Aliases**: `#components/*` (`./src/components/*.tsx`), `#lib/*` (`./src/lib/*.ts`), `#hooks/*` (`./src/hooks/*.ts`)
+## 2. Workflow Protocols
+- **Planning Phase**: Output a numbered plan (< 400 words) with target files, risks, and OUT OF SCOPE items.
+- **Execution Phase**: Implement only approved plan with minimal diffs.
+- **Search & Inspection**: Check exact line numbers before editing.
 
 ## 3. Strict Code Implementation Rules
 
@@ -173,35 +169,21 @@ Save the block below as `AGENTS.md` in the project root. This file is loaded aut
 NEVER import `.tsx` or React components directly into `.vue` template files.
 ALWAYS wrap them with `applyReactInVue` inside `src/components/watermelon-ui.ts` and import the wrapped component into Vue.
 
-### RULE 2: Design Token Usage
-ALWAYS use custom theme variables defined in `src/styles/theme.css`:
-- Colors: `atlassian-blue`, `midnight-navy`, `carbon-edge`, `slate-current`, `taxicab-yellow`, `lavender-wash`, `confetti-gradient`
-- Fonts: `font-charlie-display`, `font-charlie-text`
+### RULE 2: Design Token & Typography Usage
+ALWAYS use custom theme variables and fonts in `src/styles/globals.css` and `src/styles/theme.css`:
+- Fonts: `var(--font-charlie-display)` for titles, `var(--font-charlie-text)` for body text.
+- Colors: `atlassian-blue`, `midnight-navy`, `carbon-edge`, `slate-current`, `taxicab-yellow`, `lavender-wash`, `confetti-gradient`.
 - Utilities: Apply classes via `cn(...)` utility helper (`src/lib/utils.ts`).
 
-### RULE 3: Verification
-After generating or modifying code, verify the build with `npm run build` or `npm run dev`.
+### RULE 3: Verification & Deployment
+Verify build locally (`npm run build` or `npm run dev`) and deploy updates via `vercel --prod`.
 ```
 
 ---
 
-## 4. First-run Steps
+## 5. First-run Steps
 
 1. Run `opencode` in your project root.
 2. Run `/connect` and authenticate your AI provider.
 3. Run `/models` and select your target model.
 4. Use `Tab` to switch between `plan` mode (read-only) and `build` mode.
-
----
-
-## 5. Plugin Diagnostics & Compatibility Notes
-
-| Plugin                        | Resolved Version | Operational Status & Notes |
-| ----------------------------- | ---------------- | -------------------------- |
-| `@tarquinen/opencode-dcp`     | `3.2.0`          | Verified operational       |
-| `opencode-mem`                | `2.28.3`         | Manages conversation memory hooks |
-| `cc-safety-net`               | `2.5.2`          | Command safety layer       |
-| `opencode-snip@1.6.1`         | `1.6.1`          | Code snippet extraction    |
-| `opencode-caveman`            | `0.1.4`          | Summarization assistant    |
-| `oh-my-opencode-slim`         | `3.0.2`          | Minimal extension suite    |
-| `opencode-usage-plugin@0.0.1` | `0.0.1`          | Usage monitoring           |

@@ -1,6 +1,28 @@
+@import "./theme.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+/* Font Face Definitions for Charlie Display and Charlie Text */
+@font-face {
+  font-family: 'Charlie Display';
+  src: local('Charlie Display'), local('CharlieDisplay-Regular'),
+       url('/fonts/CharlieDisplay-Regular.woff2') format('woff2'),
+       url('/fonts/CharlieDisplay-Regular.woff') format('woff');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Charlie Text';
+  src: local('Charlie Text'), local('CharlieText-Regular'),
+       url('/fonts/CharlieText-Regular.woff2') format('woff2'),
+       url('/fonts/CharlieText-Regular.woff') format('woff');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,5 +144,10 @@
 
     body {
         @apply bg-background text-foreground;
+        font-family: var(--font-charlie-text);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-charlie-display);
     }
 }

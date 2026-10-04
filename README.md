@@ -1,6 +1,64 @@
-# CityWeb 🏙️ — Watermelon UI & Shadcn Integration (Deployed on Vercel)
+# CityWeb 🏙️ — "Piața" (Deployed on Vercel)
 
 A high-performance hybrid web application built with **Vue 3**, **Vite**, **React 19**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://vercel.com)**. This project seamlessly bridges Vue and React ecosystems using **Veaury**, allowing native React UI libraries like **Watermelon UI** and **Radix UI** components to run inside a Vue 3 reactive environment.
+
+---
+
+## 🏛️ Product Vision & Concept: "Piața"
+
+> **Working Concept**: **"Piața"** — the city square where people once met, traded, argued, and found work. Inspired by the *Micul Paris* brand (Paris had its cafés, Bucharest had its *piețe*). Alternate names to test: *Cafeneaua*, *Cartier*, *Pe Bulevard*.
+
+### Core Question
+> **"What's happening in my Bucharest, and where do I fit in it?"**
+
+### The 3-Pillar Data Model: `Where`, `When`, `Who`
+Nothing exists as a standalone listing. Every node in the application is cross-linked across the city graph:
+- **Traffic Closure**: Links to affected events, broken commute routes, and a local civic poll (*e.g., "Should Calea Victoriei be pedestrian on Sundays?"*).
+- **Event**: Displays who is attending from your neighborhood, job openings from companies present in the room, and a live event poll.
+- **Job Opening**: Shows real transit time from your home via metro, people you've met who work there, and verified salary polls for that role.
+- **Poll**: Rooted in a specific place & community (*e.g., "Sector 3 Residents"*); results directly feed featured events & city topics.
+- **Person / Profile**: A historical log of where they showed up and participated, not a static CV.
+
+---
+
+## ⚡ Daily User Flow & Micro-Moments
+
+### 1-Minute Onboarding (Setup Once)
+Four quick taps with zero long profile forms:
+1. Select your **Neighborhood / Sector**.
+2. Set your **Commute Route** (metro lines/routes for automated disruption matching).
+3. Pick **3–5 Interests**.
+4. Choose **Your Purpose** (*New in the city*, *Looking for work*, *Hiring*, *Meeting people*, or *Curious*).
+
+### A Day in the Product
+| Moment | What They Get | Time Needed |
+| :--- | :--- | :--- |
+| **Morning** | **Dimineața**: Push/Messaging digest with commute disruptions, weather, 1 local event tonight, & 1 poll question. | 30s |
+| **Midday** | Quick vote on a city poll with instant Neighborhood vs. City-wide breakdown. | 10s |
+| **Late Afternoon** | *"Tonight Near You"*: 2–3 events with transit times & neighborhood attendees. One-tap RSVP. | 1 min |
+| **Evening** | QR Code event check-in: see the room, toggle *"open to chat"*, join live Q&A. | At event |
+| **Next Day** | *"You were at X"*: 3 suggested reconnects with one-tap intros & relevant local jobs. | 2 min |
+| **Weekly** | **Săptămâna ta în București**: Activity summary, city vote outcomes, upcoming events. | 3 min |
+
+---
+
+## 🔑 Key Features & Navigation Structure
+
+### Uniquely Bucharest Features
+- 🏡 **Neighborhood Identity**: Local tags, neighborhood-vs-neighborhood poll stats (e.g., *Floreasca vs. Drumul Taberei*).
+- 📻 **"Acum în București" Feed**: Live, personalized feed matching commute closures, nearby concerts, sector polls, and nearby job listings.
+- 🛂 **City Passport**: Collect stamps for venues and neighborhoods visited via verified event check-ins.
+- 🚀 **Newcomer Path**: 30-day guided checklist for people new to Bucharest (first events, transport guide, local networking).
+- 🗣️ **Local & Authentic Voice**: Romanian-first with natural local tone + English layer for expats & students.
+- 🤝 **Warm Introductions**: Connections stem from shared physical events rather than cold DMs.
+
+### 5-Tab Core Navigation
+1. 📻 **Acum** — Live, personalized city feed.
+2. 🗺️ **Harta** — Filterable interactive city map.
+3. 👥 **Oameni** — Nearby people, communities, and neighborhood hubs.
+4. 📅 **Calendar** — Event schedule and attendance tracker.
+5. 👤 **Eu** — City Passport, visit history, and saved items.
+6. ➕ **Central Plus Button** — One-tap modal to post an Event, Job Opening, or City Poll.
 
 ---
 
@@ -12,127 +70,36 @@ A high-performance hybrid web application built with **Vue 3**, **Vite**, **Reac
 
 ---
 
-## 🌟 Key Features
+## 🛠️ Complete Tech Stack & Library Breakdown
 
-- 🌐 **Vercel Deployed**: Fully automated CI/CD deployment with `vercel.json` SPA routing support.
-- 🔄 **Dual Framework Interoperability (`Veaury`)**: Render React 19 components natively inside Vue 3 templates with full prop reactivity and event handling.
-- 🍉 **Watermelon UI Library**: Modern React UI components built with Tailwind CSS and Framer Motion.
-- 🎨 **Shadcn UI & Radix Vue**: Premium, accessible design system components (`shadcn` v4, `radix-vue`).
-- ⚡ **Tailwind CSS v4 & Custom Tokens**: Powered by `@tailwindcss/vite` v4 with custom variable themes (`theme.css`) and `tw-animate-css`.
-- 🗄️ **WatermelonDB Integration**: Prepared for local-first, highly responsive offline database operations via `@nozbe/watermelondb`.
-- 📊 **Dynamic Layout & Animations**: Smooth hardware-accelerated animations using `motion` and `framer-motion`.
+### Deployment & Core Frameworks
+- **[Vercel Platform](https://vercel.com/)** — Production hosting & SPA rewrite engine.
+- **[Vue 3](https://vuejs.org/)** (`^3.5.42`) — Reactive UI layout and navigation engine.
+- **[React 19 & React DOM](https://react.dev/)** (`^19.3.0`) — React engine powering Watermelon UI components.
+- **[Veaury](https://github.com/kalacloud-inc/veaury)** (`^2.6.3`) — Dual-framework bridge using `applyReactInVue`.
 
----
+### Styling, Fonts & Themes
+- **Typography**: Custom `@font-face` definitions for **Charlie Display** (Headings) and **Charlie Text** (Body text).
+- **Tailwind CSS v4**: Utility-first CSS engine configured via `@tailwindcss/vite` and `src/styles/theme.css`.
+- **Theme Variables**: Custom tokens for Atlassian Blue (`#1868db`), Midnight Navy (`#101214`), Taxicab Yellow (`#fca700`), Lavender Wash (`#eed7fc`), Confetti Gradient (`#bf63f3`), etc.
+- **Design Systems**: **Shadcn UI** (`base-nova`), **Radix Vue**, `cva`, `clsx`, `tailwind-merge`.
 
-## 🛠️ Complete Library Breakdown
-
-### Core Architecture & Deployment
-- **[Vercel Platform](https://vercel.com/)** — Hosting platform powering the production deployment and SPA rewrite rules.
-- **[Vue 3](https://vuejs.org/)** (`^3.5.42`) — Main application reactive core and component layout framework.
-- **[React 19 & React DOM](https://react.dev/)** (`^19.3.0`) — React library powering Watermelon UI components.
-- **[Veaury](https://github.com/kalacloud-inc/veaury)** (`^2.6.3`) — Dual-framework integration engine using `applyReactInVue` to embed React inside Vue.
-
-### Build Tooling & Vite Plugins
-- **[Vite](https://vitejs.dev/)** (`^8.3.0`) — Lightning-fast build tool with Hot Module Replacement (HMR).
-- **[@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue)** (`^6.0.8`) — Vue 3 SFC compilation plugin.
-- **[@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react)** (`^6.1.1`) — Fast Refresh and JSX transformation for React.
-- **[@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue-jsx)** (`^5.1.6`) — Vue 3 JSX support.
-- **[@tailwindcss/vite](https://tailwindcss.com/docs/vite)** (`^4.3.3`) — First-party Vite plugin for Tailwind CSS v4.
-
-### Design Systems & UI Components
-- **[Shadcn UI](https://ui.shadcn.com/)** (`^4.21.1`) — Design tokens and component registry (`base-nova` style).
-- **[Radix Vue](https://www.radix-vue.com/)** (`^1.9.17`) — Unstyled, accessible UI primitives for Vue.
-- **[Class Variance Authority (`cva`)](https://cva.style/docs)** (`^0.7.1`) — Type-safe variant management for UI buttons, badges, and cards.
-- **[clsx](https://github.com/lukeed/clsx)** (`^2.1.1`) & **[tailwind-merge](https://github.com/dcastil/tailwind-merge)** (`^3.7.0`) — Dynamic class string construction and collision resolution.
-
-### Animation & Motion Engines
-- **[Framer Motion](https://www.framer.com/motion/)** (`^14.0.0`) & **[Motion](https://motion.dev/)** (`^14.0.0`) — Production-grade animations for React & Vue layout transitions.
-- **[tw-animate-css](https://github.com/jamiebuilds/tw-animate-css)** (`^1.4.0`) — Utility-first animation classes integrated with Tailwind.
-- **[react-use-measure](https://github.com/pmndrs/react-use-measure)** (`^2.1.7`) — Reactive DOM element measurement hook for layout animations.
-
-### Icons & Offline Data
-- **[Lucide Vue Next](https://lucide.dev/)** (`^1.0.0`) & **[Lucide React](https://lucide.dev/)** (`^1.52.0`) — Unified icon sets across both Vue and React views.
-- **[React Icons](https://react-icons.github.io/react-icons/)** (`^5.7.0`) — Extended icon suites (Fa, Md, Io, etc.).
-- **[@nozbe/watermelondb](https://watermelondb.dev/)** (`^0.28.0`) — Reactive database framework built for scale and offline sync.
+### Motion & Offline Storage
+- **Animations**: `framer-motion`, `motion`, `tw-animate-css`, `react-use-measure`.
+- **Icons**: `lucide-vue-next`, `lucide-react`, `react-icons`.
+- **Database**: `@nozbe/watermelondb` for local-first offline syncing.
 
 ---
 
-## 📁 Project Structure
+## 🚀 Getting Started & Deployment
 
-```text
-CityWeb/
-├── src/
-│   ├── components/            # Vue components and React component wrappers
-│   │   ├── ui/                # Watermelon UI & React components
-│   │   ├── watermelon-ui.ts    # React-in-Vue export definitions using applyReactInVue
-│   │   └── card-split-accordian.tsx # Custom Watermelon UI component
-│   ├── styles/
-│   │   ├── globals.css        # Primary Tailwind v4 import & custom theme setup
-│   │   └── theme.css          # Design token definitions (@theme)
-│   ├── App.vue                # Main application shell
-│   └── main.js                # App entry point initializing Vue & Veaury
-├── vercel.json                # Vercel SPA deployment configuration
-├── components.json            # Shadcn UI configuration
-├── vite.config.js             # Vite config supporting Vue + React plugins
-└── package.json               # Full dependency registry & import aliases
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Installation
-Install project dependencies:
+### Run Locally
 ```bash
 npm install
-```
-
-### 2. Development Server
-Launch the development server with HMR:
-```bash
 npm run dev
 ```
 
-### 3. Production Build
-Bundle and optimize for production:
+### Deploy to Vercel Production
 ```bash
-npm run build
-```
-
----
-
-## 📐 Vercel Deployment Commands
-
-This project is deployed to **Vercel**. To update the live site:
-
-```bash
-# Deploy to Production
 vercel --prod
 ```
-
-- **Live URL**: [https://city-web-navy.vercel.app](https://city-web-navy.vercel.app)
-
----
-
-## 💡 How Veaury Integration Works
-
-To load a React component (e.g. from Watermelon UI) inside Vue 3:
-
-1. Create or place the React component under `src/components/ui/MyComponent.tsx`.
-2. Wrap it with `applyReactInVue` in `src/components/watermelon-ui.ts`:
-   ```ts
-   import { applyReactInVue } from 'veaury';
-   import MyReactComponent from './ui/MyComponent';
-
-   export const MyVueComponent = applyReactInVue(MyReactComponent);
-   ```
-3. Import and use `<MyVueComponent />` directly in Vue templates (`App.vue`).
-
----
-
-## 🎨 Path Aliases & Imports
-
-Subpath aliases defined in `package.json`:
-- `#components/*` ➔ `./src/components/*.tsx`
-- `#lib/*` ➔ `./src/lib/*.ts`
-- `#hooks/*` ➔ `./src/hooks/*.ts`
