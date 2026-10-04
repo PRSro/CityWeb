@@ -279,6 +279,13 @@ const pad = (s: string, n: number) => s.padEnd(n);
 let failures = 0;
 let soft = 0;
 
+if (process.argv.includes('--json')) {
+  const failed = rows.filter((r) => r.pass === false).length;
+  const documented = rows.filter((r) => r.threshold === null).length;
+  console.log(JSON.stringify({ rows, failures: failed, documented }, null, 2));
+  process.exit(failed > 0 ? 1 : 0);
+}
+
 console.log('');
 console.log(`  ${pad('THEME', 6)}${pad('PAIR', 38)}${pad('RATIO', 8)}${pad('MIN', 6)}RESULT`);
 console.log(`  ${'-'.repeat(94)}`);

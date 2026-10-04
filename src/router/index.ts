@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import("../pages/CalendarPage.vue"),
     },
     {
+      path: "/design",
+      name: "design",
+      component: () => import("../pages/StyleguidePage.vue"),
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: () => import("../pages/NotFoundPage.vue"),
