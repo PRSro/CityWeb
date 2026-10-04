@@ -21,6 +21,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Required by Payload to sign auth tokens. Falls back to a dev-only value so
+  // local builds do not hard-fail; set PAYLOAD_SECRET in every real environment.
+  secret: process.env.PAYLOAD_SECRET || 'dev-only-insecure-secret',
   admin: {
     user: Users.slug,
   },

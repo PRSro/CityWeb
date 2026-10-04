@@ -1,0 +1,57 @@
+{
+  // Config for oh-my-openagent / OhMyOpenCode v4.19.0 (plugin entry "oh-my-openagent").
+  // Validated against the installed package's dist/oh-my-opencode.schema.json.
+  // Canonical filename mirrors ~/.config/opencode/oh-my-opencode.jsonc.
+
+  // Same split the previous slim config used: one strong model where reasoning
+  // actually matters, cheap model for search/docs/mechanical work (which is
+  // most of the token volume in this repo).
+  "categories": {
+    "ultrabrain": { "model": "opencode/big-pickle" },
+    "deep": { "model": "opencode/big-pickle" },
+    "visual-engineering": { "model": "opencode/big-pickle" },
+    "artistry": { "model": "opencode/big-pickle" },
+    "writing": { "model": "opencode/big-pickle" },
+    "unspecified-high": { "model": "opencode/big-pickle" },
+    "unspecified-low": { "model": "opencode/nemotron-3.5-lightning-free" },
+    "quick": { "model": "opencode/nemotron-3.5-lightning-free" }
+  },
+
+  // Agents that need a vision-capable model stay off unless explicitly wanted.
+  // "atlas" is disabled upstream by default; enable via disabled_agents if the
+  // hackathon demo needs screenshot review.
+
+  // Fewer parallel background agents = fewer tokens and fewer rate limits.
+  "background_task": {
+    "defaultConcurrency": 2
+  },
+
+  // Bundled MCPs to turn off. Empty on purpose: this repo uses context7 plus the
+  // seqthinking/codegraph servers declared in opencode.jsonc.
+  "disabled_mcps": [],
+
+  // Index the codebase for structural search (callers, impact, dead imports).
+  // All three keys are required by the schema; values are the upstream defaults.
+  "codegraph": {
+    "enabled": true,
+    "auto_init": true,
+    "auto_provision": true,
+    "telemetry": false
+  },
+
+  // Required at the top level by the v4 schema. Values are the upstream
+  // defaults, written out so the commit/attribution behaviour is explicit.
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true,
+    "git_env_prefix": "GIT_MASTER=1"
+  },
+
+  // The neon + neon-postgres skills vendored in .agents/skills are registered
+  // via skills.paths in opencode.jsonc; enable them rather than disabling.
+  "skills": {
+    "disable": []
+  },
+
+  "telemetry": false
+}
