@@ -1,8 +1,38 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { AuthScreen, CardAccordion } from '#/components/watermelon-ui'
 
 const activeTab = ref('all')
+const events = ref([])
+const polls = ref([])
+const isLoading = ref(false)
+
+// Payload API Data Fetchers for Piața
+async function fetchPiataData() {
+  isLoading.value = true
+  try {
+    const [eventsRes, pollsRes] = await Promise.all([
+      fetch('/api/events').catch(() => null),
+      fetch('/api/polls').catch(() => null)
+    ])
+    if (eventsRes?.ok) {
+      const data = await eventsRes.json()
+      events.value = data.docs || []
+    }
+    if (pollsRes?.ok) {
+      const data = await pollsRes.json()
+      polls.value = data.docs || []
+    }
+  } catch (err) {
+    console.warn('Payload API not reachable locally yet:', err)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchPiataData()
+})
 </script>
 
 <template>
@@ -11,9 +41,9 @@ const activeTab = ref('all')
     <header class="w-full border-b border-zinc-800 bg-zinc-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-xl font-bold bg-gradient-to-r from-pink-500 to-indigo-500 bg-clip-text text-transparent">
-          Watermelon UI Testing Suite
+          Watermelon UI Testing Suite — Piața
         </span>
-        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-mono">Vue 3 + React</span>
+        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-mono">Vue 3 + React + Neon Postgres</span>
       </div>
 
       <!-- Component Switcher Tabs -->
@@ -64,5 +94,3 @@ const activeTab = ref('all')
     </main>
   </div>
 </template>
-
-
