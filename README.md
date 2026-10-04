@@ -1,11 +1,20 @@
-# CityWeb 🏙️ — Watermelon UI & Shadcn Integration
+# CityWeb 🏙️ — Watermelon UI & Shadcn Integration (Deployed on Vercel)
 
-A high-performance hybrid web application built with **Vue 3**, **Vite**, **React 19**, and **Tailwind CSS v4**. This project seamlessly bridges Vue and React ecosystems using **Veaury**, allowing native React UI libraries like **Watermelon UI** and **Radix UI** components to run inside a Vue 3 reactive environment.
+A high-performance hybrid web application built with **Vue 3**, **Vite**, **React 19**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://vercel.com)**. This project seamlessly bridges Vue and React ecosystems using **Veaury**, allowing native React UI libraries like **Watermelon UI** and **Radix UI** components to run inside a Vue 3 reactive environment.
+
+---
+
+## 🌐 Live Production Deployment
+
+- **Live Site**: [https://city-web-navy.vercel.app](https://city-web-navy.vercel.app)
+- **Deployment Platform**: Vercel (Edge Network)
+- **Routing Configuration**: `vercel.json` SPA rewrite engine
 
 ---
 
 ## 🌟 Key Features
 
+- 🌐 **Vercel Deployed**: Fully automated CI/CD deployment with `vercel.json` SPA routing support.
 - 🔄 **Dual Framework Interoperability (`Veaury`)**: Render React 19 components natively inside Vue 3 templates with full prop reactivity and event handling.
 - 🍉 **Watermelon UI Library**: Modern React UI components built with Tailwind CSS and Framer Motion.
 - 🎨 **Shadcn UI & Radix Vue**: Premium, accessible design system components (`shadcn` v4, `radix-vue`).
@@ -17,7 +26,8 @@ A high-performance hybrid web application built with **Vue 3**, **Vite**, **Reac
 
 ## 🛠️ Complete Library Breakdown
 
-### Core Architecture & Frameworks
+### Core Architecture & Deployment
+- **[Vercel Platform](https://vercel.com/)** — Hosting platform powering the production deployment and SPA rewrite rules.
 - **[Vue 3](https://vuejs.org/)** (`^3.5.42`) — Main application reactive core and component layout framework.
 - **[React 19 & React DOM](https://react.dev/)** (`^19.3.0`) — React library powering Watermelon UI components.
 - **[Veaury](https://github.com/kalacloud-inc/veaury)** (`^2.6.3`) — Dual-framework integration engine using `applyReactInVue` to embed React inside Vue.
@@ -61,6 +71,7 @@ CityWeb/
 │   │   └── theme.css          # Design token definitions (@theme)
 │   ├── App.vue                # Main application shell
 │   └── main.js                # App entry point initializing Vue & Veaury
+├── vercel.json                # Vercel SPA deployment configuration
 ├── components.json            # Shadcn UI configuration
 ├── vite.config.js             # Vite config supporting Vue + React plugins
 └── package.json               # Full dependency registry & import aliases
@@ -88,11 +99,18 @@ Bundle and optimize for production:
 npm run build
 ```
 
-### 4. Preview Build
-Locally preview the production bundle:
+---
+
+## 📐 Vercel Deployment Commands
+
+This project is deployed to **Vercel**. To update the live site:
+
 ```bash
-npm run preview
+# Deploy to Production
+vercel --prod
 ```
+
+- **Live URL**: [https://city-web-navy.vercel.app](https://city-web-navy.vercel.app)
 
 ---
 
