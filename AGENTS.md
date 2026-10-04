@@ -70,6 +70,7 @@ Everything hangs off Where (place/venue/neighborhood/sector/route), When (time w
 ## Conventions
 
 - Link-first design: every item must expose outgoing links to related Where/When/Who items.
+- All UI must follow docs/DESIGN_SYSTEM.md. Never hardcode colors.
 - Smallest possible diff; no unrelated refactors.
 - Seed only in `/seed`, original placeholders marked demo data.
 - Privacy: minimal onboarding, opt-in "open to chat", GDPR/ePrivacy-aware, no non-essential scripts before consent, labeled sponsored content, double opt-in newsletter.

@@ -11,7 +11,8 @@
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "check:contrast": "node --experimental-strip-types scripts/check-contrast.ts",
+    "verify": "npm run lint && npm run typecheck && npm run check:contrast && npm run test && npm run build"
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.28.0",
