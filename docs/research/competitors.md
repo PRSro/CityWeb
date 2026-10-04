@@ -56,3 +56,16 @@ City guides/maps:
 - to be added...
 
 Notes: All claims UNVERIFIED until verified via polite fetch. No full content copied.
+
+## Quick verification checklist (to complete)
+- [ ] Fetch b365.ro homepage + 2 event pages (polite, respect robots)
+- [ ] Check meetup.com Bucharest events
+- [ ] Check Facebook Events Bucharest (structure)
+- [ ] Check Google Maps "events" + businesses
+- [ ] Check ejobs.ro/bestjobs/olx jobs Bucharest
+- [ ] Identify neighborhoods/sectors coverage
+- [ ] Note map integration presence
+- [ ] Find polls/community features
+
+## Notes
+All entries UNVERIFIED. No copying.
