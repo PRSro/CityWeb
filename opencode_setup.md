@@ -1,5 +1,8 @@
 # OpenCode Setup (no Claude, no custom agents)
 
+`opencode.jsonc` and `AGENTS.md` are untracked in git for this repo, so this
+document is the tracked mirror of the live config. Keep the two in sync.
+
 ## 1. Config file
 
 Save the block below as `opencode.jsonc` in your project root
@@ -21,33 +24,36 @@ Save the block below as `opencode.jsonc` in your project root
   // ---------- Plugins ----------
   // VERIFY each npm package name and PIN a version before installing (e.g. "pkg@1.2.3").
   "plugin": [
-    "opencode-snip",
     "@tarquinen/opencode-dcp",
-    "opencode-ignore",
     "opencode-mem",
-    "opencode-skills",
-    "opencode-worktree",
-    "opencode-roadmap",
-    "opencode-notify"
+    "cc-safety-net",
+    "opencode-snip@1.6.1",
+    "opencode-caveman",
+    "oh-my-opencode-slim",
+    "opencode-usage-plugin@0.0.1",
   ],
 
   // ---------- Instructions (loaded every session, keep SHORT) ----------
-  "instructions": [
-    "AGENTS.md",
-    ".opencode/rules/*.md"
-  ],
+  "instructions": ["AGENTS.md", ".opencode/rules/*.md"],
 
   // ---------- Context and token control ----------
   "compaction": {
     "auto": true,
-    "prune": true
+    "prune": true,
   },
 
   "watcher": {
     "ignore": [
-      "node_modules/**", "dist/**", "build/**", ".next/**",
-      ".git/**", "coverage/**", "*.lock", "*.min.js", "*.map"
-    ]
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".next/**",
+      ".git/**",
+      "coverage/**",
+      "*.lock",
+      "*.min.js",
+      "*.map",
+    ],
   },
 
   // ---------- MCP servers ----------
@@ -55,8 +61,8 @@ Save the block below as `opencode.jsonc` in your project root
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
-      "enabled": true
-    }
+      "enabled": true,
+    },
   },
 
   // ---------- Permissions ----------
@@ -75,17 +81,17 @@ Save the block below as `opencode.jsonc` in your project root
       "npm test*": "allow",
       "npm run lint*": "allow",
       "git push*": "deny",
-      "rm -rf*": "deny"
-    }
+      "rm -rf*": "deny",
+    },
   },
 
   // ---------- Formatters ----------
   "formatter": {
     "prettier": {
       "command": ["npx", "prettier", "--write", "$FILE"],
-      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".md"]
-    }
-  }
+      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".md"],
+    },
+  },
 }
 ```
 
@@ -96,6 +102,7 @@ because it loads on every session.
 
 ```md
 ## Workflow
+
 - Planning: do not edit files. Output a numbered plan with files to touch,
   risks, tests to run, and an explicit OUT OF SCOPE list. Keep it under 400 words.
 - Building: implement only the approved plan, with the smallest possible diff.
@@ -103,6 +110,7 @@ because it loads on every session.
 - Search with the fewest file reads. Never paste whole files into replies.
 
 ## Project
+
 - Stack: <fill in>
 - Test command: <fill in>
 - Lint command: <fill in>
@@ -118,11 +126,27 @@ because it loads on every session.
 
 ## 4. Plugin notes
 
-Plugin names come from community awesome-opencode lists and were not checked
-against npm. Verify each name and pin a version before relying on it. Start
-with the 8 enabled above, since every extra plugin adds prompt and tool
-tokens. Other candidates: Honcho (alternative memory), Beads (task tracking),
-OpenCode Swarm (multi-agent review, token-hungry), Opencode Hooks Plugin,
-Opencode Sessions, OpenCode Adaptive Thinking, HTML to Markdown, Crawlberg,
-Opencode Log Sanitizer, Opencode Quota, agenttrace, Oh My Opencode.
-```
+The 7 plugins enabled above were each verified to exist on npm:
+
+| Plugin                        | Resolved | Note                                        |
+| ----------------------------- | -------- | ------------------------------------------- |
+| `@tarquinen/opencode-dcp`     | 3.2.0    | loads OK                                    |
+| `opencode-mem`                | 2.28.3   | declares `opencode.plugin` hooks            |
+| `cc-safety-net`               | 2.5.2    | loads OK                                    |
+| `opencode-snip@1.6.1`         | 1.6.1    | pinned; see below                           |
+| `opencode-caveman`            | 0.1.4    |                                             |
+| `oh-my-opencode-slim`         | 3.0.2    |                                             |
+| `opencode-usage-plugin@0.0.1` | 0.0.1    | pinned; 0.0.1 is the only published version |
+
+`opencode-snip@1.6.1` exports a **function** as its default
+(`export default SnipPlugin`, where `SnipPlugin` is `async ({ $ }) => ...`).
+This build rejects function-shaped plugins: `Plugin must export a default
+definition with an id and an effect or setup function`. Expect a
+`failed to load plugin` warning for it; check the log before trusting it.
+
+Every extra plugin adds prompt and tool tokens, so add new ones one at a time
+and watch `~/.local/share/opencode/log/opencode.log` for
+`failed to load plugin` entries. Known-bad names, removed from this config
+after they failed here: `opencode-ignore`, `opencode-skills`,
+`opencode-worktree` (no entrypoint), `opencode-roadmap` (404 on npm),
+`opencode-notify`.

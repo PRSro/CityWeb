@@ -1,0 +1,87 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // ---------- Models ----------
+  // Leave unset to use whatever you pick via /models after running /connect.
+  // Or pin one, in the form "provider/model-id", e.g.:
+  // "model": "openai/gpt-5",
+  // "small_model": "openai/gpt-5-mini",
+
+  "autoupdate": "notify",
+  "share": "disabled",
+
+  // ---------- Plugins ----------
+  // VERIFY each npm package name and PIN a version before installing (e.g. "pkg@1.2.3").
+  "plugin": [
+    "@tarquinen/opencode-dcp",
+    "opencode-mem",
+    "cc-safety-net",
+    "opencode-snip@1.6.1",
+    "opencode-caveman",
+    "oh-my-opencode-slim",
+    "opencode-usage-plugin@0.0.1"
+  ],
+
+  // ---------- Instructions (loaded every session, keep SHORT) ----------
+  "instructions": [
+    "AGENTS.md",
+    ".opencode/rules/*.md"
+  ],
+
+  // ---------- Context and token control ----------
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".next/**",
+      ".git/**",
+      "coverage/**",
+      "*.lock",
+      "*.min.js",
+      "*.map"
+    ]
+  },
+
+  // ---------- MCP servers ----------
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    }
+  },
+
+  // ---------- Permissions ----------
+  "permission": {
+    "edit": "ask",
+    "webfetch": "ask",
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "ls*": "allow",
+      "cat *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "npm test*": "allow",
+      "npm run lint*": "allow",
+      "git push*": "deny",
+      "rm -rf*": "deny"
+    }
+  },
+
+  // ---------- Formatters ----------
+  "formatter": {
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".md"]
+    }
+  }
+}

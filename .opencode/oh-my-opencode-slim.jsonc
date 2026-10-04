@@ -1,0 +1,30 @@
+{
+  // Config for oh-my-opencode-slim 3.0.2 (plugin entry "oh-my-opencode-slim").
+  // Verified against the installed package's oh-my-opencode-slim.schema.json.
+  // Local schema for autocomplete:
+  //   ~/.cache/opencode/npm/oh-my-opencode-slim@latest/*/node_modules/oh-my-opencode-slim/oh-my-opencode-slim.schema.json
+
+  // Strong model (Big Pickle) where reasoning matters, cheap model
+  // (Nemotron 3.5 Lightning Free) for search / docs / mechanical work,
+  // which is most of the token volume.
+  "agents": {
+    "orchestrator": { "model": "opencode/big-pickle", "temperature": 0.3 },
+    "oracle": { "model": "opencode/big-pickle" },
+    "librarian": { "model": "opencode/nemotron-3.5-lightning-free" },
+    "explorer": { "model": "opencode/nemotron-3.5-lightning-free" },
+    "designer": { "model": "opencode/nemotron-3.5-lightning-free" },
+    "fixer": { "model": "opencode/nemotron-3.5-lightning-free" },
+    "council": { "model": "opencode/nemotron-3.5-lightning-free" }
+    // "observer" is disabled by default upstream and needs a vision-capable
+    // model; enable it via disabled_agents if that ever changes.
+  },
+
+  // Fewer parallel background agents = fewer tokens and fewer rate limits.
+  "backgroundJobs": {
+    "concurrency": { "defaultConcurrency": 2 }
+  },
+
+  // Bundled MCPs to turn off. Empty: this repo only uses context7, which is
+  // declared in opencode.jsonc.
+  "disabled_mcps": []
+}
