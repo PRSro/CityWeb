@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useI18n, type Locale } from '../i18n'
+import { useRoute } from "vue-router";
+import { useI18n, type Locale } from "../i18n/index";
 
-const { t, locale, setLocale } = useI18n()
-const route = useRoute()
+const { t, locale, setLocale } = useI18n();
+const route = useRoute();
 
 const links = [
-  { to: '/evenimente', key: 'nav.events' },
-  { to: '/calendar', key: 'nav.calendar' },
-]
+  { to: "/evenimente", key: "nav.events" },
+  { to: "/calendar", key: "nav.calendar" },
+  { to: "/harta", key: "nav.harta" },
+];
 
-const locales: Locale[] = ['ro', 'en']
+const locales: Locale[] = ["ro", "en"];
 
-const isActive = (to: string) => route.path === to
+const isActive = (to: string) => route.path === to;
 </script>
 
 <template>
@@ -26,9 +27,11 @@ const isActive = (to: string) => route.path === to
       :to="link.to"
       :aria-current="isActive(link.to) ? 'page' : undefined"
       class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500"
-      :class="isActive(link.to)
-        ? 'bg-indigo-500/15 text-indigo-100'
-        : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'"
+      :class="
+        isActive(link.to)
+          ? 'bg-indigo-500/15 text-indigo-100'
+          : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'
+      "
     >
       {{ t(link.key) }}
     </RouterLink>
@@ -39,9 +42,11 @@ const isActive = (to: string) => route.path === to
         :key="option"
         type="button"
         class="rounded px-2 py-1 text-xs font-semibold uppercase transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500"
-        :class="locale === option
-          ? 'bg-zinc-800 text-zinc-100'
-          : 'text-zinc-500 hover:text-zinc-200'"
+        :class="
+          locale === option
+            ? 'bg-zinc-800 text-zinc-100'
+            : 'text-zinc-500 hover:text-zinc-200'
+        "
         :aria-pressed="locale === option"
         :aria-label="t('nav.locale')"
         @click="setLocale(option)"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import NavBar from './NavBar.vue'
-import { useI18n } from '../i18n'
+import { useI18n } from '../i18n/index'
 
 defineProps<{
   search: string

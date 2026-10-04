@@ -16,6 +16,7 @@ const ro: Record<string, MessageValue> = {
   "nav.label": "Navigare principală",
   "nav.events": "Evenimente",
   "nav.calendar": "Calendar",
+  "nav.harta": "Harta",
   "nav.locale": "Limba",
 
   "calendar.toggle": "Calendarul evenimentelor",
@@ -46,6 +47,7 @@ const ro: Record<string, MessageValue> = {
   "event.people": "{n} persoane",
   "event.connectedWith": "Conectat cu",
   "event.rsvpCta": "Vreau să merg",
+  "event.address": "Adresă",
 
   "action.close": "Închide",
 
@@ -88,6 +90,7 @@ const en: Record<string, MessageValue> = {
   "nav.label": "Main navigation",
   "nav.events": "Events",
   "nav.calendar": "Calendar",
+  "nav.harta": "Map",
   "nav.locale": "Language",
 
   "calendar.toggle": "Event calendar",
@@ -117,6 +120,7 @@ const en: Record<string, MessageValue> = {
   "event.people": "{n} people",
   "event.connectedWith": "Connected with",
   "event.rsvpCta": "I want to go",
+  "event.address": "Address",
 
   "action.close": "Close",
 

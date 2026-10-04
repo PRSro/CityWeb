@@ -3,7 +3,7 @@ import { h } from "vue";
 import { mount } from "@vue/test-utils";
 import { createMemoryHistory, createRouter } from "vue-router";
 import NavBar from "./NavBar.vue";
-import { setLocale } from "../i18n";
+import { setLocale } from "../i18n/index";
 
 const stub = { render: () => h("div") };
 
@@ -28,10 +28,11 @@ describe("NavBar", () => {
     const { wrapper } = await mountNav();
     const links = wrapper.findAll("a");
 
-    expect(links).toHaveLength(2);
+    expect(links).toHaveLength(3);
     expect(links[0].attributes("href")).toBe("/evenimente");
     expect(links[0].text()).toBe("Evenimente");
     expect(links[1].attributes("href")).toBe("/calendar");
+    expect(links[2].attributes("href")).toBe("/harta");
   });
 
   it("marks the active route with aria-current", async () => {

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import TopBar from './components/TopBar.vue'
-import { events } from './data/demo'
+import { events } from './data/demo.ts'
 
 const search = ref('')
 const selectedDate = ref(null)
