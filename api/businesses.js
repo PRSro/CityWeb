@@ -9,7 +9,7 @@ const pool = new Pool({
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' });
   try {
-    const { rows } = await pool.query('SELECT * FROM businesses ORDER BY created_at DESC');
+    const { rows } = await pool.query('SELECT * FROM businesses ORDER BY "createdAt" DESC NULLS LAST');
     res.status(200).json({ docs: rows });
   } catch (err) {
     console.error(err);

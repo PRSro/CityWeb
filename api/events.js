@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   }
   
   try {
-    const { rows } = await pool.query('SELECT * FROM events ORDER BY event_date ASC');
+    const { rows } = await pool.query('SELECT * FROM events ORDER BY "startDate" ASC');
     res.status(200).json({ docs: rows });
   } catch (err) {
     console.error('Error fetching events:', err);
