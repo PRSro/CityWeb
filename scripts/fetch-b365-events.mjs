@@ -19,7 +19,7 @@ async function checkRobots() {
     })
     if (res.ok) {
       const txt = await res.text()
-      return { ok: true, disallowsAll: txt.includes('Disallow: /') && !txt.includes('Allow: /events') }
+      return { ok: true, disallowsAll: txt.includes('Disallow: /'), text: txt }
     }
   } catch (e) {
     return { ok: false, error: e.message }
@@ -35,11 +35,15 @@ async function main() {
   await fs.mkdir(outDir, { recursive: true })
   const robots = await checkRobots()
   
+  // WARNING: b365.ro/robots.txt disallows /. Only enable with explicit approval and legal review.
+  // This is a minimal, rate-limited, field-limited fetcher.
+  const ENABLE_FETCH = false // keep disabled by default
+  
   const result = {
     source: 'b365.ro',
     fetchedAt: new Date().toISOString(),
     status: 'skipped',
-    reason: 'Safe mode: conceptual only. Requires manual review before enabling full fetch.',
+    reason: 'Safe mode: ENABLE_FETCH=false. Set to true only after LEGAL-REVIEW and approval.',
     robots,
     items: [],
     notes: [
@@ -50,6 +54,12 @@ async function main() {
       'Check LEGAL-REVIEW before enabling actual scraping',
       'Cache responses; never store raw full pages'
     ]
+  }
+  
+  if (ENABLE_FETCH) {
+    // Placeholder - implement minimal parsing only if approved
+    result.status = 'conceptual-enabled'
+    result.reason = 'Fetch enabled conceptually; implement parsing carefully'
   }
   
   await fs.writeFile(outFile, JSON.stringify(result, null, 2))
