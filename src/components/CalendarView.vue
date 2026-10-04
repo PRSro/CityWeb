@@ -120,12 +120,12 @@ const agenda = computed(() => {
 
 <template>
   <section class="mx-auto w-full max-w-7xl px-4 py-6 md:px-6">
-    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 md:p-6">
+    <div class="rounded-sm border border-border bg-surface p-4 md:p-6">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <button
             type="button"
-            class="rounded-lg border border-zinc-800 p-2 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-indigo-500"
+            class="rounded-sm border border-border p-2 text-text-muted transition-colors hover:bg-surface hover:text-text"
             :aria-label="t('cal.prev')"
             @click="shiftMonth(-1)"
           >
@@ -136,12 +136,12 @@ const agenda = computed(() => {
               fill="currentColor"
             ><path d="M15 6l-6 6 6 6" /></svg>
           </button>
-          <h2 class="min-w-40 text-center text-lg font-semibold capitalize text-zinc-100">
+          <h2 class="min-w-40 text-center text-lg font-semibold capitalize text-text">
             {{ monthLabel }}
           </h2>
           <button
             type="button"
-            class="rounded-lg border border-zinc-800 p-2 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-indigo-500"
+            class="rounded-sm border border-border p-2 text-text-muted transition-colors hover:bg-surface hover:text-text"
             :aria-label="t('cal.next')"
             @click="shiftMonth(1)"
           >
@@ -154,11 +154,11 @@ const agenda = computed(() => {
           </button>
         </div>
 
-        <div class="flex items-center gap-2 text-xs text-zinc-500">
+        <div class="flex items-center gap-2 text-xs text-text-muted">
           <span>{{ t('cal.count', { n: monthEventCount }) }}</span>
           <button
             type="button"
-            class="rounded-lg border border-zinc-800 px-3 py-1.5 text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-indigo-500"
+            class="rounded-sm border border-border px-3 py-1.5 text-text transition-colors hover:bg-surface hover:text-text"
             @click="goToday"
           >
             {{ t('cal.today') }}
@@ -166,7 +166,7 @@ const agenda = computed(() => {
           <button
             v-if="selectedDate"
             type="button"
-            class="rounded-lg border border-zinc-800 px-3 py-1.5 text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-indigo-500"
+            class="rounded-sm border border-border px-3 py-1.5 text-text transition-colors hover:bg-surface hover:text-text"
             @click="clearDay"
           >
             {{ t('cal.allDays') }}
@@ -178,7 +178,7 @@ const agenda = computed(() => {
         <span
           v-for="(day, i) in weekdays"
           :key="i"
-          class="py-1 text-[11px] font-semibold uppercase text-zinc-500"
+          class="py-1 text-[11px] font-semibold uppercase text-text-muted"
         >{{ day }}</span>
 
         <template
@@ -192,14 +192,14 @@ const agenda = computed(() => {
           <button
             v-else
             type="button"
-            class="relative flex h-11 flex-col items-center justify-center rounded-lg text-sm transition-colors md:h-14 focus-visible:ring-2 focus-visible:ring-indigo-500"
+            class="relative flex h-11 flex-col items-center justify-center rounded-sm text-sm transition-colors md:h-14"
             :class="[
               selectedDate === isoFor(cell)
-                ? 'bg-indigo-500 font-semibold text-white'
+                ? 'bg-action font-semibold text-action-text'
                 : eventsByDay.has(isoFor(cell))
-                  ? 'bg-indigo-500/10 font-medium text-indigo-200 hover:bg-indigo-500/20'
-                  : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100',
-              isToday(cell) ? 'ring-1 ring-pink-500' : '',
+                  ? 'bg-surface font-medium text-action hover:bg-action-hover hover:text-action-text'
+                  : 'text-text-muted hover:bg-surface hover:text-text',
+              isToday(cell) ? 'ring-1 ring-text' : '',
             ]"
             :aria-pressed="selectedDate === isoFor(cell)"
             :aria-label="`${cell} ${months[viewMonth]}`"
@@ -208,7 +208,7 @@ const agenda = computed(() => {
             <span>{{ cell }}</span>
             <span
               v-if="eventsByDay.has(isoFor(cell))"
-              class="text-[10px] font-normal text-indigo-300"
+              class="text-[10px] font-normal text-action"
             >{{ eventsByDay.get(isoFor(cell))!.length }}</span>
           </button>
         </template>
@@ -218,7 +218,7 @@ const agenda = computed(() => {
     <div class="mt-6 space-y-6">
       <div
         v-if="!agenda.length"
-        class="rounded-2xl border border-dashed border-zinc-800 p-8 text-center text-sm text-zinc-500"
+        class="rounded-sm border border-dashed border-border p-8 text-center text-sm text-text-muted"
       >
         {{ t('cal.empty', { month: monthLabel }) }}
       </div>
@@ -227,25 +227,25 @@ const agenda = computed(() => {
         v-for="group in agenda"
         :key="group.iso"
       >
-        <h3 class="mb-2 text-sm font-semibold capitalize text-zinc-400">
+        <h3 class="mb-2 text-sm font-semibold capitalize text-text-muted">
           {{ group.label }}
           <span
             v-if="selectedDate === group.iso"
-            class="ml-2 text-xs text-indigo-400"
+            class="ml-2 text-xs text-action"
           >{{ t('cal.filterActive') }}</span>
         </h3>
         <ul class="space-y-2">
           <li
             v-for="ev in group.list"
             :key="ev.id"
-            class="flex items-start gap-4 rounded-xl border border-zinc-800 bg-zinc-900/40 p-3"
+            class="flex items-start gap-4 rounded-sm border border-control-border bg-surface p-3"
           >
-            <span class="w-14 shrink-0 text-sm font-semibold text-indigo-300">
+            <span class="w-14 shrink-0 text-sm font-semibold text-text">
               {{ formatTime(ev.when) }}
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block truncate text-sm text-zinc-100">{{ titleOf(ev) }}</span>
-              <span class="block truncate text-xs text-zinc-500">
+              <span class="block truncate text-sm text-text">{{ titleOf(ev) }}</span>
+              <span class="block truncate text-xs text-text-muted">
                 {{ ev.neighborhood }}
                 <template v-if="ev.rsvpCount"> · {{ t('cal.interested', { n: ev.rsvpCount }) }}</template>
               </span>

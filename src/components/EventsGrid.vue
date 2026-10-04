@@ -114,13 +114,13 @@ const onKeydown = (e: KeyboardEvent) => {
     @keydown="onKeydown"
   >
     <div class="flex flex-wrap items-center gap-3">
-      <h1 class="text-2xl font-bold text-zinc-50">
+      <h1 class="text-2xl font-bold text-text">
         {{ t('events.title') }}
       </h1>
 
       <span
         v-if="activeDateLabel"
-        class="rounded-full bg-indigo-500/15 px-3 py-1 text-xs font-medium capitalize text-indigo-300"
+        class="rounded-sm border border-action bg-surface px-3 py-1 text-xs font-medium capitalize text-action"
       >
         {{ activeDateLabel }}
       </span>
@@ -133,7 +133,7 @@ const onKeydown = (e: KeyboardEvent) => {
         <select
           id="sort"
           v-model="sortBy"
-          class="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 focus:outline-none"
+          class="rounded-sm border border-control-border bg-surface px-3 py-2 text-sm text-text focus:border-text-muted"
         >
           <option value="date">
             {{ t('events.sort.date') }}
@@ -150,7 +150,7 @@ const onKeydown = (e: KeyboardEvent) => {
         <select
           id="category"
           v-model="category"
-          class="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 focus:outline-none"
+          class="rounded-sm border border-control-border bg-surface px-3 py-2 text-sm text-text focus:border-text-muted"
         >
           <option value="">
             {{ t('events.category.all') }}
@@ -166,7 +166,7 @@ const onKeydown = (e: KeyboardEvent) => {
       </div>
     </div>
 
-    <p class="text-sm text-zinc-500">
+    <p class="text-sm text-text-muted">
       <template v-if="displayedEvents.length">
         {{
           displayedEvents.length === 1
@@ -187,10 +187,10 @@ const onKeydown = (e: KeyboardEvent) => {
         v-for="event in displayedEvents"
         :key="event.id"
         type="button"
-        class="group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 text-left transition-all hover:-translate-y-0.5 hover:border-indigo-500/60 hover:shadow-xl hover:shadow-indigo-500/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        class="group flex cursor-pointer flex-col overflow-hidden rounded-sm border border-control-border bg-surface text-left transition-colors hover:-translate-y-0.5 hover:border-action"
         @click="selected = event"
       >
-        <div class="relative h-40 overflow-hidden bg-zinc-800">
+        <div class="relative h-40 overflow-hidden bg-surface">
           <img
             :src="event.image || 'https://placehold.co/800x500?text=Eveniment'"
             :alt="event.title"
@@ -201,32 +201,32 @@ const onKeydown = (e: KeyboardEvent) => {
           >
           <span
             v-if="categoryOf(event.tags)"
-            class="absolute left-3 top-3 rounded-full bg-zinc-950/80 px-2.5 py-1 text-[11px] font-medium text-zinc-200 backdrop-blur"
+            class="absolute left-3 top-3 rounded-sm bg-linie-evenimente px-2.5 py-1 text-[11px] font-medium text-linie-on-clar"
           >
             {{ categoryLabel(event.tags) }}
           </span>
         </div>
 
         <div class="flex flex-1 flex-col gap-2 p-4">
-          <h2 class="line-clamp-2 text-base font-semibold text-zinc-50">
+          <h2 class="line-clamp-2 text-base font-semibold text-text">
             {{ event.title }}
           </h2>
-          <p class="text-xs text-zinc-500">
+          <p class="text-xs text-text-muted">
             {{ formatWhen(event.when) }}
           </p>
-          <p class="text-sm text-zinc-400">
+          <p class="text-sm text-text-muted">
             📍 {{ neighborhoodName(event.neighborhood) }}
           </p>
 
-          <div class="mt-auto flex flex-wrap items-center gap-3 pt-3 text-xs text-zinc-500">
+          <div class="mt-auto flex flex-wrap items-center gap-3 pt-3 text-xs text-text-muted">
             <span>👥 {{ event.rsvpCount }} {{ t('events.rsvp') }}</span>
             <span
               v-if="event.qrCheckIn"
-              class="text-emerald-400"
+              class="text-accent"
             >✓ {{ t('events.checkin') }}</span>
             <span
               v-if="hasLinks(event)"
-              class="text-indigo-400"
+              class="text-action"
             >
               {{ t('events.connections', { n: hasLinks(event) }) }}
             </span>
@@ -237,12 +237,12 @@ const onKeydown = (e: KeyboardEvent) => {
 
     <div
       v-else
-      class="rounded-2xl border border-dashed border-zinc-800 py-16 text-center"
+      class="rounded-sm border border-dashed border-border py-16 text-center"
     >
-      <p class="text-zinc-400">
+      <p class="text-text-muted">
         {{ t('events.emptyTitle') }}
       </p>
-      <p class="mt-1 text-sm text-zinc-600">
+      <p class="mt-1 text-sm text-text-muted">
         {{ t('events.emptyHint') }}
       </p>
     </div>
@@ -250,11 +250,11 @@ const onKeydown = (e: KeyboardEvent) => {
     <Teleport to="body">
       <div
         v-if="selected"
-        class="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-amurg/70 p-4"
         @click.self="selected = null"
       >
         <div
-          class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 shadow-2xl"
+          class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-sm border border-border bg-bg"
           role="dialog"
           aria-modal="true"
           :aria-label="selected.title"
@@ -269,7 +269,7 @@ const onKeydown = (e: KeyboardEvent) => {
             >
             <button
               type="button"
-              class="absolute right-3 top-3 rounded-full bg-zinc-950/80 p-2 text-zinc-300 backdrop-blur transition-colors hover:text-white"
+              class="absolute right-3 top-3 rounded-full bg-bg p-2 text-text transition-colors hover:text-action"
               :aria-label="t('action.close')"
               @click="selected = null"
             >
@@ -284,47 +284,47 @@ const onKeydown = (e: KeyboardEvent) => {
 
           <div class="space-y-4 p-5">
             <div>
-              <h2 class="text-xl font-bold text-zinc-50">
+              <h2 class="text-xl font-bold text-text">
                 {{ selected.title }}
               </h2>
-              <p class="mt-1 text-sm text-zinc-500">
+              <p class="mt-1 text-sm text-text-muted">
                 {{ selected.localizedTitle }}
               </p>
             </div>
 
             <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-              <dt class="text-zinc-500">
+              <dt class="text-text-muted">
                 {{ t('event.when') }}
               </dt>
-              <dd class="capitalize text-zinc-200">
+              <dd class="capitalize text-text">
                 {{ formatWhen(selected.when) }}
               </dd>
 
-              <dt class="text-zinc-500">
+              <dt class="text-text-muted">
                 {{ t('event.where') }}
               </dt>
-              <dd class="text-zinc-200">
+              <dd class="text-text">
                 {{ neighborhoodName(selected.neighborhood) }}
               </dd>
 
-              <dt class="text-zinc-500">
+              <dt class="text-text-muted">
                 {{ t('event.organizers') }}
               </dt>
-              <dd class="text-zinc-200">
+              <dd class="text-text">
                 {{ selected.organizers.join(', ') }}
               </dd>
 
-              <dt class="text-zinc-500">
+              <dt class="text-text-muted">
                 {{ t('event.interest') }}
               </dt>
-              <dd class="text-right text-zinc-200">
+              <dd class="text-right text-text">
                 {{ t('event.people', { n: selected.rsvpCount }) }}
               </dd>
             </dl>
 
             <p
               v-if="selected.description"
-              class="text-sm leading-relaxed text-zinc-400"
+              class="text-sm leading-relaxed text-text-muted"
             >
               {{ selected.description }}
             </p>
@@ -336,18 +336,18 @@ const onKeydown = (e: KeyboardEvent) => {
               <span
                 v-for="tag in selected.tags"
                 :key="tag"
-                class="rounded-full bg-zinc-900 px-2.5 py-1 text-[11px] text-zinc-400"
+                class="rounded-full bg-surface px-2.5 py-1 text-[11px] text-text-muted"
               >#{{ tag }}</span>
             </div>
 
             <div
               v-if="selected.connectedPolls.length || selected.connectedJobs.length"
-              class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-3 text-xs"
+              class="rounded-sm border border-border bg-surface p-3 text-xs"
             >
-              <p class="mb-1 font-semibold text-zinc-300">
+              <p class="mb-1 font-semibold text-text">
                 {{ t('event.connectedWith') }}
               </p>
-              <ul class="space-y-1 text-zinc-500">
+              <ul class="space-y-1 text-text-muted">
                 <li
                   v-for="id in [...selected.connectedPolls, ...selected.connectedJobs]"
                   :key="id"
@@ -360,13 +360,13 @@ const onKeydown = (e: KeyboardEvent) => {
             <div class="flex gap-2">
               <button
                 type="button"
-                class="flex-1 rounded-lg bg-indigo-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+                class="flex-1 rounded-sm bg-action py-2.5 text-sm font-medium text-action-text transition-colors hover:bg-action-hover"
               >
                 {{ t('event.rsvpCta') }}
               </button>
               <button
                 type="button"
-                class="rounded-lg border border-zinc-800 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:bg-zinc-900"
+                class="rounded-sm border border-border px-4 py-2.5 text-sm text-text transition-colors hover:bg-surface"
                 @click="selected = null"
               >
                 {{ t('action.close') }}

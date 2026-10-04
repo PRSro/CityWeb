@@ -76,6 +76,9 @@ const ro: Record<string, MessageValue> = {
   "notFound.title": "Pagina nu există",
   "notFound.body": "Nu am găsit ceea ce căutai. Încearcă harta vie din nou.",
   "notFound.cta": "Vezi evenimentele",
+
+  "theme.toDark": "Comută pe temă întunecată",
+  "theme.toLight": "Comută pe temă luminoasă",
 };
 
 const en: Record<string, MessageValue> = {
@@ -148,6 +151,9 @@ const en: Record<string, MessageValue> = {
   "notFound.body":
     "We could not find what you were looking for. Try the living map again.",
   "notFound.cta": "See events",
+
+  "theme.toDark": "Switch to dark theme",
+  "theme.toLight": "Switch to light theme",
 };
 
 const messages: Record<Locale, Record<string, MessageValue>> = { ro, en };

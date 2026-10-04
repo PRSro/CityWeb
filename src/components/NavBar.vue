@@ -25,10 +25,10 @@ const isActive = (to: string) => route.path === to
       :key="link.to"
       :to="link.to"
       :aria-current="isActive(link.to) ? 'page' : undefined"
-      class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500"
+      class="shrink-0 rounded-sm border-b-2 px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-standard"
       :class="isActive(link.to)
-        ? 'bg-indigo-500/15 text-indigo-100'
-        : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'"
+        ? 'border-action text-action'
+        : 'border-transparent text-text-muted hover:text-text'"
     >
       {{ t(link.key) }}
     </RouterLink>
@@ -38,10 +38,10 @@ const isActive = (to: string) => route.path === to
         v-for="option in locales"
         :key="option"
         type="button"
-        class="rounded px-2 py-1 text-xs font-semibold uppercase transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500"
+        class="rounded-sm border px-2 py-1 text-xs font-semibold uppercase transition-colors duration-150 ease-standard"
         :class="locale === option
-          ? 'bg-zinc-800 text-zinc-100'
-          : 'text-zinc-500 hover:text-zinc-200'"
+          ? 'border-control-border bg-surface text-text'
+          : 'border-transparent text-text-muted hover:text-text'"
         :aria-pressed="locale === option"
         :aria-label="t('nav.locale')"
         @click="setLocale(option)"
