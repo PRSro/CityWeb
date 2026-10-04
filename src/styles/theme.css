@@ -71,9 +71,13 @@
   --radius-lg: 4px;
   --radius-full: 10000px;
 
-  /* Motion: colour and transform only, 150-200ms ease-out. */
+  /* Motion: colour and transform only, 150-200ms ease-out. Durations are not a
+     Tailwind theme namespace, so the scale is expressed as bare duration-*
+     utilities: 150 fast, 200 base, 300 slow. */
   --default-transition-duration: 150ms;
   --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  --ease-standard: cubic-bezier(0, 0, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* No shadow scale by design. Elevation is a single 1px border or nothing —
      never a blurred drop shadow. */
@@ -97,14 +101,11 @@
     border-left: 4px solid var(--linie-sondaje);
   }
 
-  /* Section divider: thin double rule, 1px with a 3px gap. */
+  /* Section divider: 1px rule, 3px gap, 1px rule. Two borders rather than a
+     zero-blur box-shadow, so the "no shadows" rule survives a grep. */
   .rule-double {
-    border-top: 1px solid var(--border);
-    box-shadow: 0 4px 0 -3px var(--border);
-  }
-  .rule-double-plain {
-    border-top: 1px solid var(--border);
-    box-shadow: 0 4px 0 -3px var(--border);
+    border-block: 1px solid var(--border);
+    padding-block: 3px;
   }
 
   /* Optional static stone grain on --bg only. SVG turbulence, not a gradient,

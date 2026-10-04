@@ -54,6 +54,8 @@
   --control-border: var(--text-muted);
   --action: var(--teracota);
   --action-text: var(--calcar);
+  --action-hover: color-mix(in oklab, var(--teracota) 88%, var(--cerneala));
+  --action-active: color-mix(in oklab, var(--teracota) 78%, var(--cerneala));
   --accent: var(--oblon);
   --focus-ring: var(--cerneala);
   --danger: var(--linie-trafic);
@@ -69,6 +71,8 @@
     --control-border: var(--text-muted);
     --action: var(--sodiu);
     --action-text: var(--amurg);
+    --action-hover: color-mix(in oklab, var(--sodiu) 90%, var(--hartie));
+    --action-active: color-mix(in oklab, var(--sodiu) 80%, var(--hartie));
     --accent: var(--tei);
     --focus-ring: var(--hartie);
     --danger: var(--linie-trafic);
@@ -84,6 +88,8 @@
   --control-border: var(--text-muted);
   --action: var(--sodiu);
   --action-text: var(--amurg);
+  --action-hover: color-mix(in oklab, var(--sodiu) 90%, var(--hartie));
+  --action-active: color-mix(in oklab, var(--sodiu) 80%, var(--hartie));
   --accent: var(--tei);
   --focus-ring: var(--hartie);
   --danger: var(--linie-trafic);
@@ -100,6 +106,8 @@
   --color-control-border: var(--control-border);
   --color-action: var(--action);
   --color-action-text: var(--action-text);
+  --color-action-hover: var(--action-hover);
+  --color-action-active: var(--action-active);
   --color-accent: var(--accent);
   --color-focus-ring: var(--focus-ring);
   --color-danger: var(--danger);

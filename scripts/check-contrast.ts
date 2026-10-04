@@ -80,10 +80,56 @@ function hexToRgba(hex: string): Rgba {
   };
 }
 
+interface Lab {
+  L: number;
+  a: number;
+  b: number;
+}
+
+function srgbToLinear(v: number): number {
+  const c = v / 255;
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function linearToSrgb(v: number): number {
+  const c = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+  return Math.max(0, Math.min(255, Math.round(c * 255)));
+}
+
+/* Björn Ottosson's OKLab matrices — required because color-mix(in oklab, …)
+   interpolates in OKLab, not sRGB. Mixing in sRGB would under-report contrast
+   and let a failing hover state pass the gate. */
+function toOklab(c: Rgba): Lab {
+  const r = srgbToLinear(c.r);
+  const g = srgbToLinear(c.g);
+  const b = srgbToLinear(c.b);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787 * b);
+  return {
+    L: 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    a: 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    b: 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  };
+}
+
+function fromOklab(lab: Lab): Rgba {
+  const l = (lab.L + 0.3963377774 * lab.a + 0.2158037573 * lab.b) ** 3;
+  const m = (lab.L - 0.1055613458 * lab.a - 0.0638541728 * lab.b) ** 3;
+  const s = (lab.L - 0.0894841775 * lab.a - 1.291485548 * lab.b) ** 3;
+  return {
+    r: linearToSrgb(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    g: linearToSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    b: linearToSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+    a: 1,
+  };
+}
+
 /**
  * Resolve a token value to concrete sRGB + alpha. Handles literal hex,
- * var(--x) indirection, and `color-mix(in oklab, var(--x) NN%, transparent)`
- * which reduces to the base colour at NN% alpha (CSS premultiplies the mix).
+ * var(--x) indirection, `color-mix(in oklab, var(--x) NN%, transparent)`
+ * (reduces to the base colour at NN% alpha, since CSS premultiplies the mix),
+ * and `color-mix(in oklab, var(--x) NN%, var(--y))` (interpolated in OKLab).
  */
 function resolveToken(name: string, table: Record<string, string>, seen = new Set<string>()): Rgba {
   if (seen.has(name)) throw new Error(`circular token reference: ${name}`);
@@ -92,16 +138,26 @@ function resolveToken(name: string, table: Record<string, string>, seen = new Se
   const raw = table[name];
   if (raw === undefined) throw new Error(`token not defined in CSS: ${name}`);
 
-  const mix = raw.match(
+  const solidMix = raw.match(
+    /^color-mix\(\s*in\s+oklab\s*,\s*var\((--[a-z0-9-]+)\)\s+(\d+(?:\.\d+)?)%\s*,\s*var\((--[a-z0-9-]+)\)\s*\)$/i,
+  );
+  if (solidMix) {
+    const p = parseFloat(solidMix[2]!) / 100;
+    const x = toOklab(resolveToken(solidMix[1]!, table, new Set(seen)));
+    const y = toOklab(resolveToken(solidMix[3]!, table, new Set(seen)));
+    return fromOklab({ L: x.L * p + y.L * (1 - p), a: x.a * p + y.a * (1 - p), b: x.b * p + y.b * (1 - p) });
+  }
+
+  const alphaMix = raw.match(
     /^color-mix\(\s*in\s+\w+\s*,\s*var\((--[a-z0-9-]+)\)\s+(\d+(?:\.\d+)?)%\s*,\s*transparent\s*\)$/i,
   );
-  if (mix) {
-    const base = resolveToken(mix[1]!, table, seen);
-    return { ...base, a: base.a * (parseFloat(mix[2]!) / 100) };
+  if (alphaMix) {
+    const base = resolveToken(alphaMix[1]!, table, new Set(seen));
+    return { ...base, a: base.a * (parseFloat(alphaMix[2]!) / 100) };
   }
 
   const ref = raw.match(/^var\((--[a-z0-9-]+)\)$/i);
-  if (ref) return resolveToken(ref[1]!, table, seen);
+  if (ref) return resolveToken(ref[1]!, table, new Set(seen));
 
   if (/^#[0-9a-f]{3,8}$/i.test(raw)) return hexToRgba(raw);
 
@@ -148,6 +204,8 @@ const SEMANTIC_PAIRS: Pair[] = [
   { fg: '--text-muted', bg: '--bg', kind: 'body', note: 'muted text on page' },
   { fg: '--text-muted', bg: '--surface', kind: 'body', note: 'muted text on card' },
   { fg: '--action-text', bg: '--action', kind: 'body', note: 'label on action fill' },
+  { fg: '--action-text', bg: '--action-hover', kind: 'body', note: 'label on action hover' },
+  { fg: '--action-text', bg: '--action-active', kind: 'body', note: 'label on action active' },
   { fg: '--action', bg: '--bg', kind: 'body', note: 'link text' },
   { fg: '--accent', bg: '--bg', kind: 'body', note: 'secondary accent text' },
   { fg: '--focus-ring', bg: '--bg', kind: 'ui', note: 'focus indicator' },

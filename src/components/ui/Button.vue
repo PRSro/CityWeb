@@ -15,9 +15,10 @@ const props = withDefaults(
 )
 
 const VARIANT_CLASS: Record<Variant, string> = {
-  primary: 'bg-action text-action-text border-transparent hover:opacity-90 active:opacity-80',
+  primary:
+    'bg-action text-action-text border-transparent hover:bg-action-hover active:bg-action-active',
   secondary:
-    'bg-transparent text-text border-border hover:bg-surface active:bg-surface',
+    'bg-transparent text-text border-control-border hover:bg-surface active:bg-surface',
   text: 'bg-transparent text-action border-transparent hover:underline hover:underline-offset-4',
 }
 
@@ -30,7 +31,7 @@ const SIZE_CLASS: Record<Size, string> = {
 const classes = computed(() =>
   [
     'inline-flex items-center justify-center rounded-sm border font-ui',
-    'transition-colors duration-150 ease-out select-none',
+    'transition-colors duration-150 ease-standard select-none',
     'disabled:opacity-50 disabled:cursor-not-allowed',
     VARIANT_CLASS[props.variant],
     SIZE_CLASS[props.size],
