@@ -217,6 +217,10 @@ export interface Event {
         id?: string | null;
       }[]
     | null;
+  imageUrl?: string | null;
+  sourceUrl?: string | null;
+  source?: ('manual' | 'b365' | 'meetup' | 'eventbrite' | 'iabilet' | 'other') | null;
+  unverified?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -626,6 +630,10 @@ export interface EventsSelect<T extends boolean = true> {
         tag?: T;
         id?: T;
       };
+  imageUrl?: T;
+  sourceUrl?: T;
+  source?: T;
+  unverified?: T;
   updatedAt?: T;
   createdAt?: T;
 }

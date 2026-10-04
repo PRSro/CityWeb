@@ -59,5 +59,33 @@ export const Events: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'imageUrl',
+      type: 'text',
+      label: 'Image URL (hotlink from source if permitted)',
+    },
+    {
+      name: 'sourceUrl',
+      type: 'text',
+      label: 'Source URL (attribution)',
+    },
+    {
+      name: 'source',
+      type: 'select',
+      options: [
+        { label: 'Manual', value: 'manual' },
+        { label: 'B365', value: 'b365' },
+        { label: 'Meetup', value: 'meetup' },
+        { label: 'Eventbrite', value: 'eventbrite' },
+        { label: 'iaBilet', value: 'iabilet' },
+        { label: 'Other', value: 'other' },
+      ],
+      defaultValue: 'manual',
+    },
+    {
+      name: 'unverified',
+      type: 'checkbox',
+      defaultValue: false,
+    },
   ],
 }
