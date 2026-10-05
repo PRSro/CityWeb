@@ -1,6 +1,6 @@
 # CityWeb 🏙️ — "Piața"
 
-A high-performance living city web application for Bucharest built with **Vue 3**, **TypeScript**, **Vite**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://vercel.com)**.
+A high-performance living city web application for Bucharest built with **Vue 3**, **TypeScript**, **Vite**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://city-web-navy.vercel.app/)**.
 
 For full technical architecture and codebase component breakdown, view **[`documentation.md`](./documentation.md)**.
 
