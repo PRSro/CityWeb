@@ -1,74 +1,73 @@
-# CityWeb 🏙️ — "Piața" (Deployed on Vercel)
+# CityWeb 🏙️ — "Piața"
 
-A high-performance hybrid web application built with **Vue 3**, **Vite**, **React 19**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://vercel.com)**. Powered by a **Neon PostgreSQL** database cloud backend.
+A high-performance living city web application for Bucharest built with **Vue 3**, **TypeScript**, **Vite**, and **Tailwind CSS v4**, deployed live on **[Vercel](https://vercel.com)**.
+
+For full technical architecture and codebase component breakdown, view **[`documentation.md`](./documentation.md)**.
 
 ---
 
 ## 🏛️ Product Vision & Concept: "Piața"
 
-> **Working Concept**: **"Piața"** — the city square where people once met, traded, argued, and found work. Inspired by the *Micul Paris* brand (Paris had its cafés, Bucharest had its *piețe*). Alternate names to test: *Cafeneaua*, *Cartier*, *Pe Bulevard*.
+> **Concept**: **"Piața"** — the city square where people meet, discover events, check live weather, find non-stop amenities, and navigate Bucharest. Inspired by the *Micul Paris* brand and active city life.
 
 ### Core Question
 > **"What's happening in my Bucharest, and where do I fit in it?"**
 
-### The 3-Pillar Data Model: `Where`, `When`, `Who`
-Nothing exists as a standalone listing. Every node in the application is cross-linked across the city graph:
-- **Traffic Closure**: Links to affected events, broken commute routes, and a local civic poll (*e.g., "Should Calea Victoriei be pedestrian on Sundays?"*).
-- **Event**: Displays who is attending from your neighborhood, job openings from companies present in the room, and a live event poll.
-- **Job Opening**: Shows real transit time from your home via metro, people you've met who work there, and verified salary polls for that role.
-- **Poll**: Rooted in a specific place & community (*e.g., "Sector 3 Residents"*); results directly feed featured events & city topics.
-- **Person / Profile**: A historical log of where they showed up and participated, not a static CV.
+---
+
+## 🌟 Key Features
+
+1. **🎟️ Events Feed & Interactive RSVPs**:
+   - Browse events by category (*Muzică*, *Carieră*, *Comunitate*), date, and search terms.
+   - Interactive attendance toggle ("Sunt interesat" / "Vreau să merg") with persistent `localStorage` synchronization and live participant counters.
+
+2. **🗺️ Interactive SVG Bucharest Map**:
+   - Dynamic SVG pinpoint placement using local landmark databases and OpenStreetMap geocoding.
+   - Anti-collision spiral displacement to prevent overlapping markers.
+   - Zoom (+/-), pan, mouse drag, and neighborhood filtering.
+
+3. **🌦️ 7-Day Live Weather Forecast**:
+   - Live weather predictions powered by **Open-Meteo API**.
+   - Daily high/low temperatures, precipitation chance (%), humidity, wind speed, Air Quality Index (AQI), and smart outdoor event recommendations.
+
+4. **🌙 Deschis Acum (Open Now 24/7)**:
+   - Locates non-stop pharmacies, 24/7 supermarkets, and night venues near you using **OpenStreetMap Overpass API**.
+   - Estimated walking/transit times, data freshness disclaimers, and direct Google Maps directions.
+
+5. **⚽ Match-Day & Mega-Event Traffic Alerts**:
+   - Combines stadium/concert event schedules with public transit closures (e.g. Arena Națională match night advisories for Metro M1/M3).
+
+6. **📅 Interactive Monthly Calendar**:
+   - Full monthly view with day selection, event density counters, and agenda listings.
+
+7. **🌐 Bilingual Localization (RO / EN)** & **Dark/Light Theme Toggle**.
 
 ---
 
-## 🛠️ Database Infrastructure: Neon PostgreSQL
+## 🛠️ Complete Tech Stack
 
-- **Provider**: **[Neon Database](https://neon.tech)** (Serverless PostgreSQL with connection pooling)
-- **Host**: `ep-morning-sound-zakjxw3c-pooler.c-2.eu-west-2.aws.neon.tech`
-- **ORM / CMS Bridge**: Payload CMS + `@payloadcms/db-postgres`
-- **Configured Environment File**: `c:\HACKATON\CityWeb\.env`
-
----
-
-## 🌐 Live Production Deployment
-
-- **Live Site**: [https://city-web-navy.vercel.app](https://city-web-navy.vercel.app)
-- **Deployment Platform**: Vercel (Edge Network)
-- **Routing Configuration**: `vercel.json` SPA rewrite engine
+- **Frontend Framework**: [Vue 3](https://vuejs.org/) (Composition API, `<script setup lang="ts">`)
+- **Language**: TypeScript (`vue-tsc` strictly verified)
+- **Build Tool**: [Vite 8](https://vitejs.dev/)
+- **Styling**: Tailwind CSS v4 & custom design tokens (`src/styles/theme.css`)
+- **APIs**: Open-Meteo Weather API, OpenStreetMap Nominatim & Overpass API
+- **Deployment**: Vercel Platform with `vercel.json` SPA routing rewrites
 
 ---
 
-## 🛠️ Complete Tech Stack & Library Breakdown
+## 🚀 Getting Started
 
-### Deployment, Database & Core Frameworks
-- **[Neon PostgreSQL](https://neon.tech/)** — Serverless PostgreSQL database engine with connection pooling.
-- **[Vercel Platform](https://vercel.com/)** — Production hosting & SPA rewrite engine.
-- **[Vue 3](https://vuejs.org/)** (`^3.5.42`) — Reactive UI layout and navigation engine.
-- **[React 19 & React DOM](https://react.dev/)** (`^19.3.0`) — React engine powering Watermelon UI components.
-- **[Veaury](https://github.com/kalacloud-inc/veaury)** (`^2.6.3`) — Dual-framework bridge using `applyReactInVue`.
-
-### Styling, Fonts & Themes
-- **Typography**: Custom `@font-face` definitions for **Charlie Display** (Headings) and **Charlie Text** (Body text).
-- **Tailwind CSS v4**: Utility-first CSS engine configured via `@tailwindcss/vite` and `src/styles/theme.css`.
-- **Theme Variables**: Custom tokens for Atlassian Blue (`#1868db`), Midnight Navy (`#101214`), Taxicab Yellow (`#fca700`), Lavender Wash (`#eed7fc`), Confetti Gradient (`#bf63f3`), etc.
-- **Design Systems**: **Shadcn UI** (`base-nova`), **Radix Vue**, `cva`, `clsx`, `tailwind-merge`.
-
----
-
-## 🚀 Getting Started & Deployment
-
-### Run Locally
 ```bash
+# 1. Install dependencies
 npm install
+
+# 2. Start development server
 npm run dev
+
+# 3. Build for production
+npm run build
 ```
 
-### Deploy Environment Secret to Vercel
-```bash
-vercel env add DATABASE_URL
-```
+---
 
-### Deploy to Vercel Production
-```bash
-vercel --prod
-```
+*For detailed code breakdown and component architecture, refer to **[`documentation.md`](./documentation.md)**.*
