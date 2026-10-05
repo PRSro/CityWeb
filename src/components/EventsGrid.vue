@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { events, neighborhoods } from '../data/demo'
-import { useI18n } from '../i18n'
+import { events, neighborhoods } from '../data/demo.ts'
+import { useI18n } from '../i18n/index'
 
 const props = defineProps<{
   search: string

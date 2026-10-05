@@ -42,6 +42,8 @@ export interface Event {
   connectedTraffic: string[];
   // Detail affordances
   qrCheckIn: boolean; // placeholder: visual QR only, no camera
+  address?: string;
+  localizedAddress?: string;
 }
 
 export interface JobAd {
@@ -125,6 +127,15 @@ export const neighborhoods: Neighborhood[] = [
     nvsN: { vs: "Floreasca", results: [30, 70] },
     places: ["piata-unirii", "cartier-historic"],
   },
+  {
+    id: "romexpo",
+    name: "Romexpo",
+    localizedName: "Romexpo",
+    stats: { population: 15000, activeUsers: 1900, eventsLast30: 8 },
+    tags: ["bucuresti", "expo", "business"],
+    nvsN: { vs: "Floreasca", results: [50, 50] },
+    places: ["romexpo-hall"],
+  },
 ];
 
 export const events: Event[] = [
@@ -149,7 +160,7 @@ export const events: Event[] = [
     id: "event-2",
     title: "Job Fair la Romexpo",
     localizedTitle: "Job Fair at Romexpo",
-    neighborhood: "old-town",
+    neighborhood: "romexpo",
     when: "2026-12-22T10:00:00Z",
     whenLocalized: "22 dec, 10:00",
     description: "Oportunități de carriere în toată România.",

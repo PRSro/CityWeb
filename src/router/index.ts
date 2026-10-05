@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import("../pages/CalendarPage.vue"),
     },
     {
+      path: "/harta",
+      name: "harta",
+      component: () => import("../pages/BucharestMap.vue"),
+    },
+    {
       path: "/design",
       name: "design",
       component: () => import("../pages/StyleguidePage.vue"),
