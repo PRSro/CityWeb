@@ -2,13 +2,15 @@
 import { ref, computed } from 'vue'
 import { events, neighborhoods } from '../data/demo.ts'
 import { useI18n } from '../i18n/index'
+import { useRsvp } from '../composables/useRsvp'
 
 const props = defineProps<{
   search: string
   selectedDate: string | null
 }>()
 
-const { t, intlLocale } = useI18n()
+const { t, intlLocale, locale } = useI18n()
+const { isRsvped, toggleRsvp } = useRsvp()
 
 const sortBy = ref('date')
 const category = ref('')
@@ -187,7 +189,7 @@ const onKeydown = (e: KeyboardEvent) => {
         v-for="event in displayedEvents"
         :key="event.id"
         type="button"
-        class="group flex cursor-pointer flex-col overflow-hidden rounded-sm border border-control-border bg-surface text-left transition-colors hover:-translate-y-0.5 hover:border-action"
+        class="group flex cursor-pointer flex-col overflow-hidden rounded-sm border border-control-border bg-surface text-left transition-all duration-200 hover:-translate-y-1 hover:border-action active:scale-[0.99]"
         @click="selected = event"
       >
         <div class="relative h-40 overflow-hidden bg-surface">
@@ -205,6 +207,13 @@ const onKeydown = (e: KeyboardEvent) => {
           >
             {{ categoryLabel(event.tags) }}
           </span>
+
+          <span
+            v-if="isRsvped(event.id)"
+            class="absolute right-3 top-3 rounded-sm bg-action px-2.5 py-1 text-[11px] font-bold text-action-text animate-scale-in"
+          >
+            ✓ {{ locale === 'ro' ? 'Participi' : 'Attending' }}
+          </span>
         </div>
 
         <div class="flex flex-1 flex-col gap-2 p-4">
@@ -219,7 +228,7 @@ const onKeydown = (e: KeyboardEvent) => {
           </p>
 
           <div class="mt-auto flex flex-wrap items-center gap-3 pt-3 text-xs text-text-muted">
-            <span>👥 {{ event.rsvpCount }} {{ t('events.rsvp') }}</span>
+            <span>👥 {{ event.rsvpCount + (isRsvped(event.id) ? 1 : 0) }} {{ t('events.rsvp') }}</span>
             <span
               v-if="event.qrCheckIn"
               class="text-accent"
@@ -237,24 +246,33 @@ const onKeydown = (e: KeyboardEvent) => {
 
     <div
       v-else
-      class="rounded-sm border border-dashed border-border py-16 text-center"
+      class="rounded-sm border border-dashed border-border py-16 text-center animate-fade-in flex flex-col items-center gap-3"
     >
-      <p class="text-text-muted">
+      <span class="text-4xl">🔍</span>
+      <p class="text-text-muted font-semibold">
         {{ t('events.emptyTitle') }}
       </p>
-      <p class="mt-1 text-sm text-text-muted">
+      <p class="text-sm text-text-muted">
         {{ t('events.emptyHint') }}
       </p>
+      <button
+        v-if="category || props.search || props.selectedDate"
+        type="button"
+        class="mt-2 px-4 py-2 rounded-sm bg-action/10 border border-action/30 text-action text-xs font-semibold hover:bg-action hover:text-action-text transition-colors"
+        @click="category = ''; $emit('select-date', null)"
+      >
+        {{ locale === 'ro' ? 'Resetează Filtrele' : 'Reset Filters' }}
+      </button>
     </div>
 
     <Teleport to="body">
       <div
         v-if="selected"
-        class="fixed inset-0 z-[60] flex items-center justify-center bg-amurg/70 p-4"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-amurg/70 p-4 animate-fade-in"
         @click.self="selected = null"
       >
         <div
-          class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-sm border border-border bg-bg"
+          class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-sm border border-border bg-bg animate-scale-in"
           role="dialog"
           aria-modal="true"
           :aria-label="selected.title"
@@ -317,8 +335,8 @@ const onKeydown = (e: KeyboardEvent) => {
               <dt class="text-text-muted">
                 {{ t('event.interest') }}
               </dt>
-              <dd class="text-right text-text">
-                {{ t('event.people', { n: selected.rsvpCount }) }}
+              <dd class="text-right text-text font-bold text-action">
+                {{ t('event.people', { n: selected.rsvpCount + (isRsvped(selected.id) ? 1 : 0) }) }}
               </dd>
             </dl>
 
@@ -360,9 +378,19 @@ const onKeydown = (e: KeyboardEvent) => {
             <div class="flex gap-2">
               <button
                 type="button"
-                class="flex-1 rounded-sm bg-action py-2.5 text-sm font-medium text-action-text transition-colors hover:bg-action-hover"
+                class="flex-1 rounded-sm py-2.5 text-sm font-medium transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+                :class="isRsvped(selected.id)
+                  ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                  : 'bg-action text-action-text hover:bg-action-hover'"
+                @click="toggleRsvp(selected.id)"
               >
-                {{ t('event.rsvpCta') }}
+                <span>{{ isRsvped(selected.id) ? '✓' : '⭐' }}</span>
+                <span>
+                  {{ isRsvped(selected.id)
+                    ? (locale === 'ro' ? 'Ești înscris! (Renunță)' : 'Attending! (Cancel)')
+                    : t('event.rsvpCta')
+                  }}
+                </span>
               </button>
               <button
                 type="button"

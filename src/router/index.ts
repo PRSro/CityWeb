@@ -20,6 +20,16 @@ const router = createRouter({
       component: () => import("../pages/BucharestMap.vue"),
     },
     {
+      path: "/vremea",
+      name: "vremea",
+      component: () => import("../pages/WeatherPage.vue"),
+    },
+    {
+      path: "/deschis-acum",
+      name: "deschis-acum",
+      component: () => import("../pages/DeschisAcumPage.vue"),
+    },
+    {
       path: "/design",
       name: "design",
       component: () => import("../pages/StyleguidePage.vue"),

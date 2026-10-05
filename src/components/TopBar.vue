@@ -49,9 +49,17 @@ const calendarActive = () => route.path === '/calendar'
             type="search"
             :placeholder="t('search.placeholder')"
             :aria-label="t('search.label')"
-            class="w-full rounded-sm border border-control-border bg-surface py-2.5 pl-10 pr-3 text-sm text-text placeholder:text-text-muted focus:border-text-muted"
+            class="w-full rounded-sm border border-control-border bg-surface py-2.5 pl-10 pr-9 text-sm text-text placeholder:text-text-muted focus:border-text-muted"
             @input="emit('update:search', ($event.target as HTMLInputElement).value)"
           >
+          <button
+            v-if="search"
+            type="button"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-muted hover:text-text p-1 transition-colors"
+            @click="emit('update:search', '')"
+          >
+            ✕
+          </button>
         </div>
 
         <RouterLink

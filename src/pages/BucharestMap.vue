@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { events, neighborhoods, type Event } from "../data/demo.ts";
 import MapPinpoint from "../components/MapPinpoint.vue";
 import { useI18n } from "../i18n/index";
+import { LOCATION_DATABASE, getEventCoordinates, calculateDynamicEventPositions, type LocationCoords } from "../services/locationService";
 
 const { t, locale } = useI18n();
 
@@ -11,13 +12,28 @@ const props = defineProps<{
   selectedDate?: string | null;
 }>();
 
-// Neighborhood-to-SVG coordinate mapping (px, within bucharest.svg viewBox 0 0 210 297)
-const neighborhoodCoords: Record<string, { cx: number; cy: number }> = {
-  romexpo: { cx: 90, cy: 68 },
-  floreasca: { cx: 118, cy: 82 },
-  "drumul-taberei": { cx: 58, cy: 148 },
-  "old-town": { cx: 102, cy: 124 },
-};
+// Map of event ID -> { cx, cy }
+const dynamicCoordsMap = ref<Map<string, LocationCoords>>(new Map());
+
+async function updateCoordinates() {
+  const baseMap = calculateDynamicEventPositions(events);
+  dynamicCoordsMap.value = baseMap;
+
+  // Asynchronously query dynamic geocoding for events with specific addresses
+  for (const evt of events) {
+    if (evt.address || evt.title) {
+      getEventCoordinates(evt).then((coords) => {
+        const currentMap = new Map(dynamicCoordsMap.value);
+        currentMap.set(evt.id, coords);
+        dynamicCoordsMap.value = currentMap;
+      });
+    }
+  }
+}
+
+onMounted(() => {
+  updateCoordinates();
+});
 
 const selectedNeighborhood = ref<string | null>(null);
 const selectedEvent = ref<Event | null>(events[0] || null);
@@ -40,11 +56,20 @@ const filteredEvents = computed(() => {
       const matchTitle = (evt.localizedTitle || evt.title).toLowerCase().includes(q);
       const matchDesc = (evt.localizedDescription || evt.description).toLowerCase().includes(q);
       const matchNeighbourhood = evt.neighborhood.toLowerCase().includes(q);
-      if (!matchTitle && !matchDesc && !matchNeighbourhood) return false;
+      const matchAddress = evt.address?.toLowerCase().includes(q);
+      if (!matchTitle && !matchDesc && !matchNeighbourhood && !matchAddress) return false;
     }
     return true;
   });
 });
+
+function getEventCx(evt: Event): number {
+  return dynamicCoordsMap.value.get(evt.id)?.cx ?? LOCATION_DATABASE[evt.neighborhood]?.cx ?? 105;
+}
+
+function getEventCy(evt: Event): number {
+  return dynamicCoordsMap.value.get(evt.id)?.cy ?? LOCATION_DATABASE[evt.neighborhood]?.cy ?? 148;
+}
 
 function handleSelectEvent(evt: Event) {
   selectedEvent.value = evt;
@@ -52,9 +77,9 @@ function handleSelectEvent(evt: Event) {
 
 function selectNeighborhood(id: string | null) {
   selectedNeighborhood.value = selectedNeighborhood.value === id ? null : id;
-  if (id && neighborhoodCoords[id]) {
+  if (id && LOCATION_DATABASE[id]) {
     // Zoom in on selected neighborhood
-    const coord = neighborhoodCoords[id];
+    const coord = LOCATION_DATABASE[id];
     zoomLevel.value = 2.0;
     // Offset relative to center (105, 148)
     panX.value = Math.round((105 - coord.cx) * 1.5);
@@ -230,8 +255,8 @@ function onMouseUp() {
                   :neighborhood="event.neighborhood"
                   :address="event.address ?? 'N/A'"
                   :localized-address="event.localizedAddress ?? (event.localizedTitle || event.title)"
-                  :cx="neighborhoodCoords[event.neighborhood]?.cx"
-                  :cy="neighborhoodCoords[event.neighborhood]?.cy"
+                  :cx="getEventCx(event)"
+                  :cy="getEventCy(event)"
                   @select="handleSelectEvent"
                 />
               </svg>

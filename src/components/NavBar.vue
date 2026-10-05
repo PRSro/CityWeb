@@ -9,6 +9,8 @@ const links = [
   { to: "/evenimente", key: "nav.events" },
   { to: "/calendar", key: "nav.calendar" },
   { to: "/harta", key: "nav.harta" },
+  { to: "/vremea", key: "nav.vremea" },
+  { to: "/deschis-acum", key: "nav.deschis" },
 ];
 
 const locales: Locale[] = ["ro", "en"];
