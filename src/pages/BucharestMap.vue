@@ -299,17 +299,17 @@ function onMouseUp() {
               <div
                 v-for="evt in filteredEvents"
                 :key="evt.id"
-                class="p-3 rounded-sm border transition-all cursor-pointer flex flex-col gap-1"
+                class="p-2 rounded-sm border transition-all cursor-pointer flex flex-col gap-0.5"
                 :class="selectedEvent?.id === evt.id 
                   ? 'border-action/80 bg-action/10' 
                   : 'border-border/60 bg-bg hover:border-control-border hover:bg-surface'"
                 @click="handleSelectEvent(evt)"
               >
-                <div class="flex items-center justify-between">
-                  <span class="font-body text-caption font-semibold text-text truncate max-w-[180px]">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="min-w-0 flex-1 font-body text-caption font-semibold text-text truncate">
                     {{ evt.localizedTitle || evt.title }}
                   </span>
-                  <span class="text-[10px] text-action font-medium">
+                  <span class="shrink-0 text-[10px] text-action font-medium">
                     {{ evt.whenLocalized }}
                   </span>
                 </div>

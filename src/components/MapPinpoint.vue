@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Event } from '../data/demo'
 
 const props = defineProps<{
@@ -16,6 +16,17 @@ const emit = defineEmits<{
 }>()
 
 const isHovered = ref(false)
+
+// SVG <text> cannot wrap or ellipsize, so long labels are clamped here
+// instead of relying on CSS overflow like the HTML banners do.
+const LABEL_MAX_CHARS = 18
+
+const pinLabel = computed(() => {
+  const raw = props.localizedAddress.trim()
+  return raw.length > LABEL_MAX_CHARS
+    ? `${raw.slice(0, LABEL_MAX_CHARS - 1)}…`
+    : raw
+})
 </script>
 
 <template>
@@ -65,7 +76,7 @@ const isHovered = ref(false)
         text-anchor="middle"
         class="fill-text font-ui text-[9px] font-semibold tracking-wide"
       >
-        {{ props.localizedAddress }}
+        {{ pinLabel }}
       </text>
     </g>
   </g>
